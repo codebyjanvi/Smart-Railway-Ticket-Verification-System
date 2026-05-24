@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Verify</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="card">
+    <h2>Verify Ticket</h2>
+
+    <input id="ticket" placeholder="Enter Ticket ID">
+
+    <video id="video" width="100%" autoplay></video>
+
+    <button onclick="verify()">Scan & Verify</button>
+</div>
+
+<script>
+
+let ticketID = null;
+let scanning = true;
+
+// STEP 1 → QR SCAN
+function onScanSuccess(decodedText) {
+
+    if(!scanning) return; // prevent multiple triggers
+
+    scanning = false;
+    ticketID = decodedText;
+
+    document.getElementById("ticketDisplay").innerHTML =
+        "🎫 Ticket: " + ticketID;
+
+    document.getElementById("faceSection").style.display = "block";
+
+    // AUTO FACE VERIFY AFTER 1 SECOND
+    setTimeout(()=>{
+        verify();
+    },1000);
+}
+
+let scanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: 200
+});
+
+scanner.render(onScanSuccess);
+
+
+// CAMERA START
+let video = document.getElementById("video");
+
+navigator.mediaDevices.getUserMedia({video:true})
+.then(stream => video.srcObject = stream);
+
+
+// VERIFY FUNCTION
+function verify(){
+
+    let canvas = document.createElement("canvas");
+    canvas.width = 300;
+    canvas.height = 200;
+
+    canvas.getContext("2d").drawImage(video,0,0,300,200);
+
+    fetch("/verify_ticket",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            ticket: ticketID,
+            face: canvas.toDataURL()
+        })
+    })
+    .then(r=>r.json())
+    .then(data=>{
+
+        let result = document.getElementById("resultSection");
+        result.style.display = "block";
+
+        if(data.status === "valid"){
+            result.innerHTML = "✅ Valid - " + data.name;
+        }
+        else{
+            result.innerHTML = "🚨 Issue - Fine ₹" + data.fine;
+        }
+
+        // 🔥 AUTO MOVE TO NEXT PASSENGER
+        setTimeout(()=>{
+            resetScanner();
+        },2000);
+
+    });
+}
+
+
+// RESET FOR NEXT SCAN
+function resetScanner(){
+
+    ticketID = null;
+    scanning = true;
+
+    document.getElementById("ticketDisplay").innerHTML = "";
+    document.getElementById("faceSection").style.display = "none";
+    document.getElementById("resultSection").innerHTML = "";
+
+    // scanner already running → no need to restart
+}
+
+</script>
+
+</body>
+</html>

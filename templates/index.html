@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indian Railways — Digital Services Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ir-navy: #0A1628;
+  --ir-navy-med: #102040;
+  --ir-navy-light: #1A3358;
+  --ir-blue: #1B4F9E;
+  --ir-blue-bright: #2563EB;
+  --ir-blue-light: #DBEAFE;
+  --ir-saffron: #D97706;
+  --ir-saffron-light: #FEF3C7;
+  --ir-green: #059669;
+  --ir-green-light: #D1FAE5;
+  --ir-red: #DC2626;
+  --ir-white: #F8FAFC;
+  --ir-silver: #E2E8F0;
+  --ir-slate: #64748B;
+  --ir-slate-dark: #334155;
+  --font-primary: 'IBM Plex Sans', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body { font-family: var(--font-primary); background: #F1F5F9; color: var(--ir-slate-dark); -webkit-font-smoothing:antialiased; }
+ 
+/* HEADER */
+.sys-header {
+  background: var(--ir-navy);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 3px solid var(--ir-saffron);
+  position: sticky; top: 0; z-index: 100;
+}
+.brand-block { display:flex; align-items:center; gap:14px; }
+.brand-wheel {
+  width:38px; height:38px; border-radius:50%;
+  background: var(--ir-saffron);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+}
+.brand-text-main { font-size:15px; font-weight:600; color:#fff; letter-spacing:.04em; }
+.brand-text-sub { font-size:10px; color:rgba(255,255,255,.5); letter-spacing:.1em; text-transform:uppercase; margin-top:1px; }
+.header-nav { display:flex; align-items:center; gap:2px; }
+.header-nav a {
+  color:rgba(255,255,255,.65); text-decoration:none; font-size:13px; font-weight:500;
+  padding:6px 14px; border-radius:4px; transition:.15s; letter-spacing:.02em;
+}
+.header-nav a:hover { background:rgba(255,255,255,.1); color:#fff; }
+.header-meta { display:flex; align-items:center; gap:16px; font-size:12px; color:rgba(255,255,255,.5); }
+.live-badge {
+  background: var(--ir-green); color:#fff; font-size:10px; font-weight:600;
+  padding:2px 8px; border-radius:20px; letter-spacing:.04em; display:flex; align-items:center; gap:4px;
+}
+.live-dot { width:6px;height:6px;border-radius:50%;background:#fff;animation:blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+ 
+/* MARQUEE TICKER */
+.ticker-bar {
+  background: var(--ir-navy-med);
+  color: rgba(255,255,255,.6);
+  font-size: 12px;
+  letter-spacing: .03em;
+  padding: 0;
+  overflow: hidden;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+.ticker-label {
+  background: var(--ir-saffron);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:0 16px;
+  height:100%;
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+}
+.ticker-content {
+  animation: tickerScroll 30s linear infinite;
+  white-space: nowrap;
+  padding-left: 24px;
+}
+@keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+ 
+/* HERO */
+.hero {
+  background: var(--ir-navy);
+  color:#fff;
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; bottom:0;
+  background: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=1600&auto=format&fit=crop') center/cover;
+  opacity: .08;
+}
+.hero-inner { position:relative; max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 420px; gap:48px; align-items:center; }
+.hero-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  padding:4px 12px; border-radius:20px;
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  color:rgba(255,255,255,.7); margin-bottom:16px;
+}
+.hero h1 {
+  font-size:32px; font-weight:600; line-height:1.25;
+  letter-spacing:-.02em; margin-bottom:10px;
+}
+.hero h1 span { color: var(--ir-saffron); }
+.hero-sub { font-size:14px; color:rgba(255,255,255,.55); line-height:1.7; max-width:480px; }
+.hero-stats { display:flex; gap:32px; margin-top:32px; }
+.hero-stat-val { font-family:var(--font-mono); font-size:24px; font-weight:600; color:#fff; }
+.hero-stat-lbl { font-size:11px; color:rgba(255,255,255,.45); margin-top:2px; text-transform:uppercase; letter-spacing:.05em; }
+ 
+/* BOOKING WIDGET */
+.booking-widget {
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,.4);
+}
+.widget-tabs {
+  display:flex;
+  background:#F8FAFC;
+  border-bottom:1px solid #E2E8F0;
+}
+.widget-tab {
+  flex:1; padding:12px; text-align:center;
+  font-size:12px; font-weight:600; color:var(--ir-slate);
+  cursor:pointer; border-bottom:2px solid transparent;
+  transition:.15s; letter-spacing:.03em; text-transform:uppercase;
+}
+.widget-tab.active { color:var(--ir-blue); border-bottom-color:var(--ir-blue); background:#fff; }
+.widget-body { padding:24px; }
+.widget-form-group { margin-bottom:14px; }
+.widget-label { font-size:11px; font-weight:600; color:var(--ir-slate); letter-spacing:.05em; text-transform:uppercase; display:block; margin-bottom:5px; }
+.widget-input {
+  width:100%; padding:10px 14px;
+  border:1px solid #CBD5E1; border-radius:8px;
+  font-family:var(--font-primary); font-size:14px; color:var(--ir-slate-dark);
+  background:#fff; outline:none; transition:.15s;
+}
+.widget-input:focus { border-color:var(--ir-blue-bright); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+.widget-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.btn-book {
+  width:100%; padding:13px;
+  background:var(--ir-blue);
+  color:#fff; border:none;
+  border-radius:8px;
+  font-family:var(--font-primary);
+  font-size:14px; font-weight:600;
+  cursor:pointer; transition:.15s; letter-spacing:.02em;
+  margin-top:4px;
+}
+.btn-book:hover { background:var(--ir-blue-bright); }
+.widget-switch-link {
+  text-align:center; font-size:12px; color:var(--ir-slate); margin-bottom:14px;
+  display:flex; align-items:center; gap:6px; justify-content:center;
+}
+.swap-btn {
+  background:#F1F5F9; border:1px solid #E2E8F0; border-radius:20px;
+  padding:3px 10px; font-size:11px; cursor:pointer; color:var(--ir-blue); font-weight:600;
+}
+ 
+/* MAIN CONTENT */
+.main { max-width:1200px; margin:0 auto; padding:32px 40px; }
+ 
+/* QUICK ACTIONS */
+.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px;
+}
+.section-title { font-size:13px; font-weight:700; color:var(--ir-navy); letter-spacing:.06em; text-transform:uppercase; }
+.section-link { font-size:12px; color:var(--ir-blue); text-decoration:none; font-weight:500; }
+ 
+.actions-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.action-card {
+  background:#fff;
+  border:1px solid #E2E8F0;
+  border-radius:12px;
+  padding:20px 16px;
+  text-align:center;
+  text-decoration:none;
+  transition:.2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+  display:block;
+}
+.action-card:hover { box-shadow:0 4px 12px rgba(0,0,0,.1); transform:translateY(-2px); border-color:#CBD5E1; }
+.action-icon {
+  width:44px; height:44px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; margin:0 auto 10px;
+}
+.action-label { font-size:13px; font-weight:600; color:var(--ir-slate-dark); }
+.action-desc { font-size:11px; color:var(--ir-slate); margin-top:3px; }
+ 
+/* SERVICE GRID */
+.service-section { margin-top:32px; display:grid; grid-template-columns:2fr 1fr; gap:24px; }
+ 
+/* POPULAR ROUTES */
+.route-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 0;
+  border-bottom:1px solid #F1F5F9;
+  cursor:pointer; transition:.15s;
+}
+.route-item:last-child { border-bottom:none; }
+.route-item:hover { background:#F8FAFC; margin:0 -24px; padding:14px 24px; border-radius:8px; }
+.route-from-to { font-size:14px; font-weight:600; color:var(--ir-navy); letter-spacing:.02em; }
+.route-meta { font-size:11px; color:var(--ir-slate); margin-top:2px; }
+.route-price { text-align:right; }
+.price-from { font-size:11px; color:var(--ir-slate); }
+.price-val { font-size:16px; font-weight:600; color:var(--ir-slate-dark); font-family:var(--font-mono); }
+ 
+/* NOTICES */
+.notice-item {
+  padding:12px 0;
+  border-bottom:1px solid #F1F5F9;
+  display:flex; gap:10px;
+}
+.notice-item:last-child { border-bottom:none; }
+.notice-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.notice-text { font-size:12px; color:var(--ir-slate-dark); line-height:1.5; }
+.notice-date { font-size:11px; color:var(--ir-slate); margin-top:2px; }
+ 
+/* FOOTER */
+.footer {
+  background:var(--ir-navy); color:rgba(255,255,255,.4);
+  padding:20px 40px; margin-top:40px;
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:11px; letter-spacing:.04em;
+}
+.footer-links { display:flex; gap:24px; }
+.footer-links a { color:rgba(255,255,255,.4); text-decoration:none; }
+.footer-links a:hover { color:rgba(255,255,255,.7); }
+ 
+/* TRAIN STATUS BAR */
+.status-bar {
+  background:#fff; border:1px solid #E2E8F0;
+  border-radius:10px; padding:14px 20px;
+  display:flex; align-items:center; gap:16px;
+  margin-top:24px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.status-train-no { font-family:var(--font-mono); font-size:18px; font-weight:600; color:var(--ir-navy); }
+.status-train-name { font-size:11px; color:var(--ir-slate); text-transform:uppercase; letter-spacing:.05em; }
+.status-progress { flex:1; }
+.status-bar-track { background:#E2E8F0; height:6px; border-radius:3px; position:relative; }
+.status-bar-fill { background: linear-gradient(90deg, var(--ir-blue), var(--ir-blue-bright)); height:100%; border-radius:3px; width:62%; }
+.status-stations { display:flex; justify-content:space-between; font-size:11px; color:var(--ir-slate); margin-top:4px; }
+.status-on-time { background:var(--ir-green-light); color:#065F46; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; }
+ 
+select { appearance:none; }
+</style>
+</head>
+<body>
+ 
+<!-- SYSTEM HEADER -->
+<header class="sys-header">
+  <div class="brand-block">
+    <div class="brand-wheel">⊙</div>
+    <div>
+      <div class="brand-text-main">INDIAN RAILWAYS</div>
+      <div class="brand-text-sub">Digital Services Platform</div>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="/book" class="active">Book Ticket</a>
+    <a href="/pnr">PNR Status</a>
+    <a href="/cancel">Cancellation</a>
+    <a href="#tte">TTE Portal</a>
+    <a href="/admin">Admin</a>
+  </nav>
+  <div class="header-meta">
+    <span>Ministry of Railways, GoI</span>
+    <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+  </div>
+</header>
+ 
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-label">NOTICE</div>
+  <div class="ticker-content">
+    Train 12049 Gatimaan Express: Running on time &nbsp;•&nbsp; 
+    Train 22221 Rajdhani Express: Delayed by 15 mins at Bhopal &nbsp;•&nbsp;
+    Booking open for Diwali holiday trains: Oct 15–Nov 5 &nbsp;•&nbsp;
+    System maintenance scheduled Sunday 02:00–04:00 IST &nbsp;•&nbsp;
+    New feature: Biometric verification now available for AC coaches &nbsp;•&nbsp;
+    Train 12049 Gatimaan Express: Running on time &nbsp;•&nbsp; 
+    Train 22221 Rajdhani Express: Delayed by 15 mins at Bhopal &nbsp;•&nbsp;
+  </div>
+</div>
+ 
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">⊙ SmartRail Ver 3.1 — Active</div>
+      <h1>Integrated Railway<br>Ticketing & <span>Verification</span><br>System</h1>
+      <p class="hero-sub">QR-based passenger verification with facial authentication. Book, manage, and validate rail travel across the national network.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-val">25,841</div>
+          <div class="hero-stat-lbl">Tickets Booked</div>
+        </div>
+        <div>
+          <div class="hero-stat-val">10,293</div>
+          <div class="hero-stat-lbl">Verified Passengers</div>
+        </div>
+        <div>
+          <div class="hero-stat-val">99.1%</div>
+          <div class="hero-stat-lbl">Auth Accuracy</div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- BOOKING WIDGET -->
+    <div class="booking-widget">
+      <div class="widget-tabs">
+        <div class="widget-tab active">Book Ticket</div>
+        <div class="widget-tab" onclick="window.location='/pnr'">PNR Status</div>
+      </div>
+      <div class="widget-body">
+        <div class="widget-form-group">
+          <label class="widget-label">From</label>
+          <select class="widget-input" id="src">
+            <option>Bangalore</option>
+            <option>Mumbai</option>
+            <option>Delhi</option>
+            <option>Chennai</option>
+            <option>Kolkata</option>
+            <option>Hyderabad</option>
+            <option>Pune</option>
+            <option>Jaipur</option>
+          </select>
+        </div>
+        <div class="widget-switch-link">
+          <div style="flex:1;height:1px;background:#E2E8F0;"></div>
+          <button class="swap-btn" onclick="swapStations()">⇅ Swap</button>
+          <div style="flex:1;height:1px;background:#E2E8F0;"></div>
+        </div>
+        <div class="widget-form-group">
+          <label class="widget-label">To</label>
+          <select class="widget-input" id="dst">
+            <option>Mumbai</option>
+            <option>Bangalore</option>
+            <option>Delhi</option>
+            <option>Chennai</option>
+            <option>Kolkata</option>
+            <option>Hyderabad</option>
+            <option>Pune</option>
+            <option>Jaipur</option>
+          </select>
+        </div>
+        <div class="widget-grid">
+          <div class="widget-form-group" style="margin-bottom:0">
+            <label class="widget-label">Date</label>
+            <input type="date" class="widget-input" id="tdate">
+          </div>
+          <div class="widget-form-group" style="margin-bottom:0">
+            <label class="widget-label">Class</label>
+            <select class="widget-input">
+              <option value="AC">AC (3A)</option>
+              <option value="Sleeper">Sleeper</option>
+              <option value="AC2">AC (2A)</option>
+              <option value="General">General</option>
+            </select>
+          </div>
+        </div>
+        <br>
+        <button class="btn-book" onclick="goBook()">Search Trains →</button>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- MAIN CONTENT -->
+<main class="main">
+ 
+  <!-- LIVE TRAIN STATUS -->
+  <div class="status-bar">
+    <div>
+      <div class="status-train-no">12657</div>
+      <div class="status-train-name">Chennai Mail</div>
+    </div>
+    <div class="status-progress">
+      <div class="status-bar-track">
+        <div class="status-bar-fill"></div>
+      </div>
+      <div class="status-stations">
+        <span>KSR Bangalore</span>
+        <span>▸ Katpadi Jn ▸</span>
+        <span>Chennai Central</span>
+      </div>
+    </div>
+    <div class="status-on-time">On Time</div>
+    <div style="font-size:13px;color:var(--ir-slate);">
+      Arrival: <strong style="color:var(--ir-navy)">05:30</strong>
+    </div>
+  </div>
+ 
+  <!-- QUICK ACTIONS -->
+  <div style="margin-top:32px;">
+    <div class="section-head">
+      <div class="section-title">Services</div>
+      <a href="#" class="section-link">View all →</a>
+    </div>
+    <div class="actions-grid">
+      <a href="/book" class="action-card">
+        <div class="action-icon" style="background:#DBEAFE;">🎟</div>
+        <div class="action-label">Book Ticket</div>
+        <div class="action-desc">Reserve seat with QR</div>
+      </a>
+      <a href="/pnr" class="action-card">
+        <div class="action-icon" style="background:#D1FAE5;">📋</div>
+        <div class="action-label">PNR Status</div>
+        <div class="action-desc">Check booking status</div>
+      </a>
+      <a href="/cancel" class="action-card">
+        <div class="action-icon" style="background:#FEE2E2;">✕</div>
+        <div class="action-label">Cancel Ticket</div>
+        <div class="action-desc">Request refund</div>
+      </a>
+      <a href="#tte" class="action-card">
+        <div class="action-icon" style="background:#FEF3C7;">🪪</div>
+        <div class="action-label">TTE Portal</div>
+        <div class="action-desc">Verify passengers</div>
+      </a>
+    </div>
+  </div>
+ 
+  <!-- SERVICE + NOTICES -->
+  <div class="service-section">
+ 
+    <!-- POPULAR ROUTES -->
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);">
+      <div style="padding:14px 24px;border-bottom:1px solid #F1F5F9;background:#FAFBFC;display:flex;align-items:center;justify-content:space-between;">
+        <div class="section-title">Popular Routes</div>
+        <span style="font-size:11px;color:var(--ir-slate);">Availability updated daily</span>
+      </div>
+      <div style="padding:0 24px;">
+        <div class="route-item" onclick="go('Bangalore','Mumbai')">
+          <div>
+            <div class="route-from-to">Bangalore → Mumbai</div>
+            <div class="route-meta">12029 Shatabdi • Daily • 17h 35m</div>
+          </div>
+          <div class="route-price">
+            <div class="price-from">From</div>
+            <div class="price-val">₹1,240</div>
+          </div>
+        </div>
+        <div class="route-item" onclick="go('Delhi','Chennai')">
+          <div>
+            <div class="route-from-to">Delhi → Chennai</div>
+            <div class="route-meta">22221 Grand Trunk • 6 days/wk • 28h 10m</div>
+          </div>
+          <div class="route-price">
+            <div class="price-from">From</div>
+            <div class="price-val">₹1,975</div>
+          </div>
+        </div>
+        <div class="route-item" onclick="go('Hyderabad','Goa')">
+          <div>
+            <div class="route-from-to">Hyderabad → Goa</div>
+            <div class="route-meta">17031 Vasco Exp • 3 days/wk • 14h 20m</div>
+          </div>
+          <div class="route-price">
+            <div class="price-from">From</div>
+            <div class="price-val">₹840</div>
+          </div>
+        </div>
+        <div class="route-item" onclick="go('Pune','Bangalore')">
+          <div>
+            <div class="route-from-to">Pune → Bangalore</div>
+            <div class="route-meta">11025 Siddheshwar • Daily • 18h 05m</div>
+          </div>
+          <div class="route-price">
+            <div class="price-from">From</div>
+            <div class="price-val">₹905</div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- NOTICES + TTE LOGIN -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+ 
+      <!-- NOTICES -->
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);">
+        <div style="padding:14px 20px;border-bottom:1px solid #F1F5F9;background:#FAFBFC;">
+          <div class="section-title">Operational Notices</div>
+        </div>
+        <div style="padding:0 20px;">
+          <div class="notice-item">
+            <div class="notice-dot" style="background:var(--ir-saffron);"></div>
+            <div>
+              <div class="notice-text">Platform 3 at Bangalore City Jn. closed for repairs</div>
+              <div class="notice-date">21 May 2026</div>
+            </div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-dot" style="background:var(--ir-green);"></div>
+            <div>
+              <div class="notice-text">New QR verification system deployed on all Rajdhani services</div>
+              <div class="notice-date">19 May 2026</div>
+            </div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-dot" style="background:var(--ir-blue);"></div>
+            <div>
+              <div class="notice-text">Holiday special trains added: Chennai–Mumbai–Chennai</div>
+              <div class="notice-date">18 May 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- TTE LOGIN -->
+      <div id="tte" style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);">
+        <div style="padding:14px 20px;border-bottom:1px solid #F1F5F9;background:var(--ir-navy);display:flex;align-items:center;gap:8px;">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:12px;">🪪</div>
+          <div class="section-title" style="color:#fff;">TTE Secure Login</div>
+        </div>
+        <div style="padding:20px;">
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:11px;font-weight:600;color:var(--ir-slate);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;">Employee ID</label>
+            <input id="user" placeholder="e.g. TTE-KR-0421" style="width:100%;padding:10px 14px;border:1px solid #CBD5E1;border-radius:8px;font-size:14px;font-family:'IBM Plex Sans',sans-serif;outline:none;">
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:11px;font-weight:600;color:var(--ir-slate);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;">Password</label>
+            <input id="pass" type="password" placeholder="••••••••" style="width:100%;padding:10px 14px;border:1px solid #CBD5E1;border-radius:8px;font-size:14px;font-family:'IBM Plex Sans',sans-serif;outline:none;">
+          </div>
+          <button onclick="login()" style="width:100%;padding:11px;background:var(--ir-navy);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.03em;font-family:'IBM Plex Sans',sans-serif;">
+            Authenticate & Enter Portal
+          </button>
+          <div id="login-err" style="font-size:12px;color:var(--ir-red);margin-top:8px;text-align:center;display:none;">Invalid credentials. Contact system admin.</div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+</main>
+ 
+<!-- FOOTER -->
+<footer class="footer">
+  <div>© 2026 Ministry of Railways, Government of India &nbsp;•&nbsp; SmartRail Digital Services v3.1</div>
+  <div class="footer-links">
+    <a href="#">Help</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+ 
+<script>
+// Set today's date as default
+document.getElementById('tdate').value = new Date().toISOString().split('T')[0];
+ 
+function swapStations() {
+  const s = document.getElementById('src');
+  const d = document.getElementById('dst');
+  const tmp = s.value;
+  s.value = d.value;
+  d.value = tmp;
+}
+ 
+function goBook() {
+  const src = document.getElementById('src').value;
+  const dst = document.getElementById('dst').value;
+  localStorage.setItem('source', src);
+  localStorage.setItem('destination', dst);
+  window.location = '/book';
+}
+ 
+function go(from, to) {
+  localStorage.setItem('source', from);
+  localStorage.setItem('destination', to);
+  window.location = '/book';
+}
+ 
+function login() {
+  fetch('/login_user', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: document.getElementById('user').value,
+      password: document.getElementById('pass').value
+    })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.redirect) { window.location = d.redirect; }
+    else { document.getElementById('login-err').style.display = 'block'; }
+  });
+}
+</script>
+</body>
+</html>

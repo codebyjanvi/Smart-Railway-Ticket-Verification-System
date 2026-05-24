@@ -1,0 +1,332 @@
+Payment · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Payment — Indian Railways</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ir-navy:#0A1628;--ir-blue:#1B4F9E;--ir-blue-bright:#2563EB;--ir-blue-light:#DBEAFE;
+  --ir-saffron:#D97706;--ir-green:#059669;--ir-green-light:#D1FAE5;
+  --ir-red:#DC2626;--ir-slate:#64748B;--ir-slate-dark:#334155;
+  --font-primary:'IBM Plex Sans',Arial,sans-serif;--font-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-primary);background:#F1F5F9;color:var(--ir-slate-dark);-webkit-font-smoothing:antialiased;}
+.sys-header{background:var(--ir-navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:3px solid var(--ir-saffron);position:sticky;top:0;z-index:100;}
+.brand-block{display:flex;align-items:center;gap:14px;}
+.brand-wheel{width:38px;height:38px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.brand-text-main{font-size:15px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.brand-text-sub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
+ 
+.main{max-width:900px;margin:0 auto;padding:32px 24px;}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ir-slate);margin-bottom:20px;}
+.breadcrumb a{color:var(--ir-blue);text-decoration:none;}
+.page-title{font-size:22px;font-weight:600;color:var(--ir-navy);margin-bottom:4px;}
+.page-subtitle{font-size:13px;color:var(--ir-slate);margin-bottom:28px;}
+ 
+.step-indicator{display:flex;align-items:center;gap:0;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;margin-bottom:28px;display:inline-flex;}
+.step{padding:8px 20px;font-size:12px;font-weight:600;color:var(--ir-slate);letter-spacing:.04em;text-transform:uppercase;background:#fff;border-right:1px solid #E2E8F0;}
+.step:last-child{border-right:none;}
+.step.active{background:var(--ir-navy);color:#fff;}
+.step.done{background:var(--ir-green-light);color:#065F46;}
+ 
+.payment-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;}
+ 
+/* ORDER SUMMARY CARD */
+.summary-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.summary-header{background:var(--ir-navy);color:#fff;padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;}
+.order-id-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px;}
+.order-id{font-family:var(--font-mono);font-size:16px;font-weight:600;letter-spacing:.08em;}
+.order-secure{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);padding:4px 12px;border-radius:20px;font-size:11px;color:rgba(255,255,255,.7);}
+.summary-body{padding:24px;}
+ 
+/* ROUTE DISPLAY */
+.route-display{display:flex;align-items:center;gap:16px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:16px 20px;margin-bottom:20px;}
+.route-station{flex:1;}
+.station-code{font-size:28px;font-weight:600;color:var(--ir-navy);font-family:var(--font-mono);letter-spacing:.05em;}
+.station-name{font-size:11px;color:var(--ir-slate);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+.route-mid{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.route-line{width:100%;height:2px;background:linear-gradient(90deg,var(--ir-navy),var(--ir-blue-bright));border-radius:2px;}
+.route-train{font-size:11px;color:var(--ir-slate);font-weight:500;}
+ 
+/* FARE TABLE */
+.fare-section{border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;}
+.fare-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid #F1F5F9;font-size:13px;}
+.fare-row:last-child{border-bottom:none;}
+.fare-label{color:var(--ir-slate);}
+.fare-val{font-family:var(--font-mono);font-weight:600;color:var(--ir-slate-dark);}
+.fare-total-row{background:#F8FAFC;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font-size:16px;font-weight:600;color:var(--ir-navy);}
+.fare-total-val{font-family:var(--font-mono);font-size:20px;color:var(--ir-green);}
+ 
+/* PAYMENT PANEL */
+.pay-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.pay-head{background:#F8FAFC;padding:16px 20px;border-bottom:1px solid #E2E8F0;font-size:13px;font-weight:700;color:var(--ir-navy);letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.pay-body{padding:20px;}
+ 
+/* QR BOX */
+.qr-wrapper{border:1px solid #E2E8F0;border-radius:10px;padding:20px;text-align:center;background:#FAFBFC;margin-bottom:16px;}
+.qr-wrapper img{width:180px;height:180px;border-radius:8px;}
+.qr-label{font-size:11px;color:var(--ir-slate);margin-top:10px;line-height:1.5;}
+.upi-id{font-family:var(--font-mono);font-size:13px;color:var(--ir-navy);font-weight:600;background:#F1F5F9;padding:8px 16px;border-radius:6px;margin-top:8px;display:inline-block;}
+ 
+/* TIMER */
+.timer-section{background:var(--ir-navy);border-radius:10px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.timer-label{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;}
+.timer-val{font-family:var(--font-mono);font-size:22px;font-weight:600;color:#fff;}
+.timer-val.urgent{color:#FCA5A5;animation:timerPulse 1s ease-in-out infinite;}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.6}}
+ 
+/* STATUS STATES */
+.status-pending{display:block;}
+.status-success{display:none;text-align:center;padding:24px;}
+.status-success .success-icon{width:72px;height:72px;border-radius:50%;background:var(--ir-green-light);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;}
+.status-success h3{font-size:18px;font-weight:600;color:var(--ir-green);margin-bottom:8px;}
+.status-success p{font-size:13px;color:var(--ir-slate);}
+ 
+.payment-methods{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.method-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #E2E8F0;border-radius:8px;cursor:pointer;transition:.15s;font-size:13px;color:var(--ir-slate-dark);}
+.method-opt.selected{border-color:var(--ir-blue);background:var(--ir-blue-light);color:var(--ir-blue);}
+.method-opt input{accent-color:var(--ir-blue);}
+ 
+.secure-note{text-align:center;font-size:11px;color:var(--ir-slate);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:4px;}
+</style>
+</head>
+<body>
+ 
+<header class="sys-header">
+  <div class="brand-block">
+    <div class="brand-wheel">⊙</div>
+    <div>
+      <div class="brand-text-main">INDIAN RAILWAYS</div>
+      <div class="brand-text-sub">Digital Services Platform</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div style="font-size:12px;color:rgba(255,255,255,.5);">🔒 &nbsp;Secure Payment Session</div>
+  </div>
+</header>
+ 
+<div class="main">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span>
+    <a href="/book">Book Ticket</a> <span>›</span>
+    <span>Payment</span>
+  </div>
+ 
+  <div class="page-title">Confirm & Pay</div>
+  <div class="page-subtitle">Review your journey details and complete payment</div>
+ 
+  <div class="step-indicator">
+    <div class="step done">1 · Details</div>
+    <div class="step active">2 · Payment</div>
+    <div class="step">3 · Ticket</div>
+  </div>
+ 
+  <div class="payment-layout">
+ 
+    <!-- LEFT: ORDER SUMMARY -->
+    <div>
+      <div class="summary-card">
+        <div class="summary-header">
+          <div>
+            <div class="order-id-label">Order Reference</div>
+            <div class="order-id" id="orderRef">IR-————————</div>
+          </div>
+          <div class="order-secure">🔒 &nbsp;PCI-DSS Secured</div>
+        </div>
+        <div class="summary-body">
+ 
+          <!-- ROUTE -->
+          <div class="route-display">
+            <div class="route-station">
+              <div class="station-code" id="srcCode">—</div>
+              <div class="station-name" id="srcName">Origin</div>
+            </div>
+            <div class="route-mid">
+              <div class="route-line"></div>
+              <div class="route-train" id="routeTrain">—</div>
+            </div>
+            <div class="route-station" style="text-align:right;">
+              <div class="station-code" id="dstCode">—</div>
+              <div class="station-name" id="dstName">Destination</div>
+            </div>
+          </div>
+ 
+          <!-- DETAILS ROW -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+            <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:12px;">
+              <div style="font-size:10px;color:var(--ir-slate);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Passenger</div>
+              <div style="font-size:13px;font-weight:600;color:var(--ir-slate-dark);" id="paxName">—</div>
+            </div>
+            <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:12px;">
+              <div style="font-size:10px;color:var(--ir-slate);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Date</div>
+              <div style="font-size:13px;font-weight:600;color:var(--ir-slate-dark);font-family:var(--font-mono);" id="journeyDate">—</div>
+            </div>
+            <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:12px;">
+              <div style="font-size:10px;color:var(--ir-slate);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Class</div>
+              <div style="font-size:13px;font-weight:600;color:var(--ir-slate-dark);" id="seatClass">—</div>
+            </div>
+          </div>
+ 
+          <!-- FARE BREAKDOWN -->
+          <div style="font-size:12px;font-weight:700;color:var(--ir-navy);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;">Fare Breakdown</div>
+          <div class="fare-section">
+            <div class="fare-row">
+              <span class="fare-label">Base Fare</span>
+              <span class="fare-val" id="f-base">—</span>
+            </div>
+            <div class="fare-row">
+              <span class="fare-label">Reservation Charge</span>
+              <span class="fare-val" id="f-platform">—</span>
+            </div>
+            <div class="fare-row">
+              <span class="fare-label">Goods & Services Tax</span>
+              <span class="fare-val" id="f-gst">—</span>
+            </div>
+            <div class="fare-total-row">
+              <span>Total Payable</span>
+              <span class="fare-total-val" id="f-total">—</span>
+            </div>
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+ 
+    <!-- RIGHT: PAYMENT PANEL -->
+    <div>
+      <div class="pay-card">
+        <div class="pay-head">💳 &nbsp;Complete Payment</div>
+        <div class="pay-body">
+ 
+          <!-- TIMER -->
+          <div class="timer-section">
+            <div>
+              <div class="timer-label">Session expires in</div>
+              <div class="timer-val" id="timer">05:00</div>
+            </div>
+            <div style="font-size:24px;">⏱</div>
+          </div>
+ 
+          <!-- STATUS: PENDING -->
+          <div class="status-pending" id="statusPending">
+            <div class="qr-wrapper">
+              <img id="upiQr" src="" alt="UPI QR Code" style="background:#f0f0f0;">
+              <div class="qr-label">Scan with any UPI app</div>
+              <div class="upi-id" id="upiId">Loading...</div>
+            </div>
+ 
+            <div style="font-size:12px;font-weight:700;color:var(--ir-slate);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Or select payment method</div>
+            <div class="payment-methods">
+              <label class="method-opt selected">
+                <input type="radio" name="pay" checked> UPI / QR Code
+              </label>
+              <label class="method-opt">
+                <input type="radio" name="pay"> Net Banking
+              </label>
+              <label class="method-opt">
+                <input type="radio" name="pay"> Debit / Credit Card
+              </label>
+            </div>
+          </div>
+ 
+          <!-- STATUS: SUCCESS -->
+          <div class="status-success" id="statusSuccess">
+            <div class="success-icon">✓</div>
+            <h3>Payment Confirmed</h3>
+            <p>Generating your ticket and QR code…</p>
+            <div style="margin-top:16px;"><div style="width:48px;height:4px;background:var(--ir-green);border-radius:2px;margin:0 auto;animation:grow 1.5s ease forwards;"></div></div>
+          </div>
+ 
+          <div class="secure-note">🔒 &nbsp;256-bit TLS encryption &nbsp;· &nbsp;Ministry of Railways</div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<style>
+@keyframes grow { from{width:48px} to{width:100%} }
+</style>
+ 
+<script>
+const bookingData = JSON.parse(localStorage.getItem('booking'));
+if (!bookingData) { alert('Session expired. Please rebook.'); window.location = '/book'; }
+ 
+// Populate order ref
+document.getElementById('orderRef').textContent = 'IR-' + Math.random().toString(36).substring(2,12).toUpperCase();
+document.getElementById('srcCode').textContent = bookingData.source.substring(0,3).toUpperCase();
+document.getElementById('srcName').textContent = bookingData.source;
+document.getElementById('dstCode').textContent = bookingData.destination.substring(0,3).toUpperCase();
+document.getElementById('dstName').textContent = bookingData.destination;
+document.getElementById('paxName').textContent = bookingData.name;
+document.getElementById('journeyDate').textContent = new Date(bookingData.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+document.getElementById('seatClass').textContent = bookingData.seat;
+ 
+// Fetch payment details
+fetch('/generate_payment_qr', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(bookingData)
+})
+.then(r => r.json())
+.then(d => {
+  document.getElementById('f-base').textContent = '₹' + d.base;
+  document.getElementById('f-platform').textContent = '₹' + d.platform;
+  document.getElementById('f-gst').textContent = '₹' + d.gst;
+  document.getElementById('f-total').textContent = '₹' + d.total;
+  document.getElementById('upiQr').src = d.qr;
+  document.getElementById('upiId').textContent = 'upi://pay?pa=ir@indianrailways';
+  document.getElementById('routeTrain').textContent = d.train || '—';
+});
+ 
+// Timer
+let secs = 300;
+const timerEl = document.getElementById('timer');
+const timerInt = setInterval(() => {
+  const m = Math.floor(secs/60);
+  const s = (secs%60).toString().padStart(2,'0');
+  timerEl.textContent = m + ':' + s;
+  if (secs < 60) timerEl.classList.add('urgent');
+  if (secs <= 0) { clearInterval(timerInt); alert('Payment session expired. Please rebook.'); window.location='/book'; }
+  secs--;
+}, 1000);
+ 
+// Poll for payment
+let paid = false;
+const checker = setInterval(() => {
+  fetch('/check_payment')
+  .then(r => r.json())
+  .then(d => {
+    if (d.paid && !paid) {
+      paid = true; clearInterval(checker); clearInterval(timerInt);
+      document.getElementById('statusPending').style.display = 'none';
+      document.getElementById('statusSuccess').style.display = 'block';
+ 
+      fetch('/book_ticket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+      })
+      .then(r => r.json())
+      .then(data => {
+        setTimeout(() => window.location = '/ticket/' + data.ticket_id, 1500);
+      });
+    }
+  }).catch(() => {});
+}, 2000);
+ 
+// Method toggle
+document.querySelectorAll('.method-opt').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.method-opt').forEach(m => m.classList.remove('selected'));
+    el.classList.add('selected');
+  });
+});
+</script>
+</body>
+</html>

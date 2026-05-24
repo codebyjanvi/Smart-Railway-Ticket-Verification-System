@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body style="text-align:center">
+
+<h2>TTE Panel</h2>
+
+<input id="source" placeholder="From"><br>
+<input id="destination" placeholder="To"><br>
+
+<select id="seat">
+<option>AC</option>
+<option>Sleeper</option>
+</select><br><br>
+
+<button onclick="load()">Load Passengers</button>
+
+<div id="list"></div>
+
+<script>
+function load(){
+fetch("/get_passengers",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+source:source.value,
+destination:destination.value,
+seat:seat.value
+})
+})
+.then(r=>r.json())
+.then(data=>{
+let html="";
+data.forEach(p=>{
+html+=`<p>${p.name} - ${p.seat}</p>`;
+});
+list.innerHTML=html;
+});
+}
+</script>
+
+</body>
+</html>

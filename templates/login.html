@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login — Indian Railways</title>
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+  --ir-navy:#0A1628;
+  --ir-blue:#1B4F9E;
+  --ir-blue-bright:#2563EB;
+  --ir-blue-light:#DBEAFE;
+  --ir-saffron:#D97706;
+  --ir-green:#059669;
+  --ir-red:#DC2626;
+  --ir-slate:#64748B;
+  --ir-slate-dark:#334155;
+
+  --font-primary:'IBM Plex Sans',Arial,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:var(--font-primary);
+    background:#F1F5F9;
+    color:var(--ir-slate-dark);
+    min-height:100vh;
+}
+
+/* HEADER */
+.sys-header{
+    background:var(--ir-navy);
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
+    border-bottom:3px solid var(--ir-saffron);
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.brand{
+    color:white;
+    font-size:18px;
+    font-weight:600;
+    letter-spacing:.05em;
+}
+
+/* MAIN */
+.main{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:calc(100vh - 60px);
+    padding:20px;
+}
+
+/* LOGIN CARD */
+.box{
+    width:400px;
+    background:white;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+    padding:35px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    animation:fadeIn .8s ease;
+}
+
+/* TITLE */
+.title{
+    text-align:center;
+    margin-bottom:28px;
+}
+
+.title h2{
+    color:var(--ir-navy);
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+.title p{
+    font-size:12px;
+    color:var(--ir-slate);
+}
+
+/* LABEL */
+.label{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    color:var(--ir-slate);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+    margin-top:14px;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid #CBD5E1;
+    outline:none;
+    font-size:14px;
+    font-family:var(--font-primary);
+    transition:.2s;
+}
+
+input:focus{
+    border-color:var(--ir-blue-bright);
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:13px;
+    margin-top:22px;
+    border:none;
+    border-radius:10px;
+    background:var(--ir-navy);
+    color:white;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    background:var(--ir-blue);
+    transform:translateY(-2px);
+}
+
+/* MESSAGE */
+#msg{
+    margin-top:18px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ir-red);
+    font-weight:500;
+}
+
+/* SECURITY BOX */
+.secure-box{
+    margin-top:18px;
+    background:var(--ir-blue-light);
+    border:1px solid #BFDBFE;
+    padding:12px;
+    border-radius:10px;
+    font-size:12px;
+    color:#1E3A8A;
+    text-align:center;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:18px;
+    text-align:center;
+    font-size:11px;
+    color:var(--ir-slate);
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* MOBILE */
+@media(max-width:500px){
+
+    .box{
+        width:100%;
+        padding:28px 22px;
+    }
+
+    .sys-header{
+        padding:0 18px;
+    }
+
+    .brand{
+        font-size:15px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="sys-header">
+
+    <div class="brand">
+        🚆 Indian Railways Digital Services
+    </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="box">
+
+        <div class="title">
+
+            <h2>Login Portal</h2>
+
+            <p>Secure Passenger & Admin Authentication</p>
+
+        </div>
+
+        <label class="label">Username</label>
+
+        <input id="user" placeholder="Enter Username">
+
+        <label class="label">Password</label>
+
+        <input id="pass" type="password" placeholder="Enter Password">
+
+        <button onclick="login()">
+            Login Securely
+        </button>
+
+        <p id="msg"></p>
+
+        <div class="secure-box">
+            🔒 Protected using Indian Railways Secure Authentication Gateway
+        </div>
+
+        <div class="footer">
+            Ministry of Railways · SmartRail Access Control System
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function login(){
+
+fetch("/login_user",{
+
+method:"POST",
+
+headers:{
+    "Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+username:document.getElementById("user").value,
+
+password:document.getElementById("pass").value
+
+})
+
+})
+
+.then(r=>r.json())
+
+.then(d=>{
+
+if(d.redirect){
+
+window.location=d.redirect;
+
+}else{
+
+document.getElementById("msg").innerText=d.error || "Invalid credentials";
+
+}
+
+})
+
+.catch(()=>{
+
+document.getElementById("msg").innerText="Server error. Please try again.";
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+Flask
+gunicorn
+sqlite3
+qrcode
+opencv-python

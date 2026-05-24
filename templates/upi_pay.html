@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>UPI Payment</title>
+
+<style>
+
+body{
+    font-family:Segoe UI;
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.box{
+    background:#1f2937;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:350px;
+}
+
+h1{
+    color:#22c55e;
+}
+
+button{
+    background:#22c55e;
+    border:none;
+    padding:15px 30px;
+    color:white;
+    font-size:18px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+button:hover{
+    background:#16a34a;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>Scan Payment</h1>
+
+<h2>Amount: ₹{{amount}}</h2>
+
+<p>Click below to complete payment</p>
+
+<button onclick="payNow()">
+    PAY NOW
+</button>
+
+</div>
+
+<script>
+
+function payNow(){
+
+    window.location.href="/payment_success";
+
+}
+
+</script>
+
+</body>
+</html>

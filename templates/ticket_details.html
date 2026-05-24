@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Passenger Details — Indian Railways</title>
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ir-navy:#0A1628;
+  --ir-blue:#1B4F9E;
+  --ir-blue-bright:#2563EB;
+  --ir-blue-light:#DBEAFE;
+  --ir-saffron:#D97706;
+  --ir-green:#059669;
+  --ir-slate:#64748B;
+  --ir-slate-dark:#334155;
+
+  --font-primary:'IBM Plex Sans',Arial,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:var(--font-primary);
+  background:#F1F5F9;
+  padding:40px;
+  color:var(--ir-slate-dark);
+}
+
+/* HEADER STYLE */
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:24px;
+  color:var(--ir-navy);
+  letter-spacing:0.5px;
+}
+
+.header p{
+  font-size:12px;
+  color:var(--ir-slate);
+}
+
+/* CARD */
+.card{
+  width:520px;
+  margin:auto;
+  background:#fff;
+  border:1px solid #E2E8F0;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  padding:24px;
+}
+
+/* ROWS */
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #F1F5F9;
+  font-size:13px;
+}
+
+.label{
+  color:var(--ir-slate);
+  font-weight:500;
+}
+
+.value{
+  font-weight:600;
+  color:var(--ir-slate-dark);
+  font-family:var(--font-mono);
+}
+
+/* IMAGE */
+img{
+  width:100%;
+  border-radius:10px;
+  margin-top:15px;
+  border:2px solid var(--ir-blue-light);
+}
+
+/* BADGE */
+.badge{
+  display:inline-block;
+  background:var(--ir-green);
+  color:#fff;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+.footer-note{
+  text-align:center;
+  font-size:11px;
+  color:var(--ir-slate);
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Passenger Verification Portal</h1>
+  <p>Indian Railways Digital Ticket System</p>
+</div>
+
+<div class="card">
+
+  <div class="badge">✓ Ticket Verified</div>
+
+  <div class="row">
+    <span class="label">Ticket ID</span>
+    <span class="value">{{ ticket['ticket_id'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Name</span>
+    <span class="value">{{ ticket['name'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">PNR</span>
+    <span class="value">{{ ticket['pnr'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">From</span>
+    <span class="value">{{ ticket['source'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">To</span>
+    <span class="value">{{ ticket['destination'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Date</span>
+    <span class="value">{{ ticket['date'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Seat</span>
+    <span class="value">{{ ticket['seat'] }}</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Bogie</span>
+    <span class="value">{{ ticket['bogie'] }}</span>
+  </div>
+
+  <h3 style="margin-top:18px;color:var(--ir-navy);font-size:14px;">
+    Passenger Image
+  </h3>
+
+  <img src="{{ url_for('static', filename='faces/' + ticket['face_image']) }}">
+
+  <div class="footer-note">
+    Ministry of Railways — Secure QR Verified Record
+  </div>
+
+</div>
+
+</body>
+</html>

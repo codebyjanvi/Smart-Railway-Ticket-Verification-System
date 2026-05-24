@@ -1,0 +1,297 @@
+Tte dashboard · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TTE Operations — Indian Railways</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ir-navy:#0A1628;--ir-blue:#1B4F9E;--ir-blue-bright:#2563EB;--ir-blue-light:#DBEAFE;
+  --ir-saffron:#D97706;--ir-saffron-light:#FEF3C7;
+  --ir-green:#059669;--ir-green-light:#D1FAE5;
+  --ir-red:#DC2626;--ir-red-light:#FEE2E2;
+  --ir-slate:#64748B;--ir-slate-dark:#334155;
+  --font-primary:'IBM Plex Sans',Arial,sans-serif;--font-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-primary);background:#0D1B2E;color:#E2E8F0;-webkit-font-smoothing:antialiased;min-height:100vh;}
+.sys-header{background:#0A1628;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:3px solid var(--ir-saffron);}
+.brand-block{display:flex;align-items:center;gap:14px;}
+.brand-wheel{width:38px;height:38px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.brand-text-main{font-size:15px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.brand-text-sub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:16px;}
+.tte-badge{background:rgba(217,119,6,.2);border:1px solid rgba(217,119,6,.4);color:var(--ir-saffron);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:.04em;}
+.logout-link{color:rgba(255,255,255,.4);font-size:12px;text-decoration:none;transition:.15s;}
+.logout-link:hover{color:#fff;}
+ 
+.main{max-width:1000px;margin:0 auto;padding:32px 24px;}
+ 
+/* OFFICER INFO BAR */
+.officer-bar{background:#102040;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.officer-avatar{width:48px;height:48px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.officer-info{flex:1;margin-left:16px;}
+.officer-name{font-size:16px;font-weight:600;color:#fff;}
+.officer-role{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;letter-spacing:.04em;text-transform:uppercase;}
+.officer-meta{display:flex;gap:24px;}
+.officer-meta-item{text-align:center;}
+.officer-meta-val{font-family:var(--font-mono);font-size:16px;font-weight:600;color:#fff;}
+.officer-meta-lbl{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase;margin-top:2px;}
+ 
+/* SHIFT INFO */
+.shift-bar{display:flex;align-items:center;gap:12px;background:#1A3358;border-radius:8px;padding:10px 20px;margin-bottom:32px;}
+.shift-dot{width:8px;height:8px;border-radius:50%;background:var(--ir-green);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.shift-text{font-size:13px;color:rgba(255,255,255,.7);}
+.shift-text strong{color:#fff;}
+ 
+/* MAIN GRID */
+.tte-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;}
+ 
+/* SECTION CARD */
+.tte-card{background:#102040;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;}
+.tte-card-head{padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
+.tte-card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.tte-card-title{font-size:13px;font-weight:600;color:#fff;letter-spacing:.04em;text-transform:uppercase;}
+.tte-card-body{padding:24px;}
+ 
+/* COACH SELECTOR */
+.coach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.coach-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:.2s;color:#fff;}
+.coach-btn:hover{background:rgba(27,79,158,.3);border-color:rgba(37,99,235,.4);}
+.coach-btn.selected{background:var(--ir-blue);border-color:var(--ir-blue-bright);}
+.coach-code{font-family:var(--font-mono);font-size:16px;font-weight:600;margin-bottom:2px;}
+.coach-type{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.04em;}
+.coach-type-selected{color:rgba(255,255,255,.8);}
+ 
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.stat-mini{background:rgba(255,255,255,.05);border-radius:8px;padding:12px 16px;text-align:center;}
+.stat-mini-val{font-family:var(--font-mono);font-size:20px;font-weight:600;color:#fff;}
+.stat-mini-lbl{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+.stat-mini.green .stat-mini-val{color:#34D399;}
+.stat-mini.red .stat-mini-val{color:#F87171;}
+.stat-mini.yellow .stat-mini-val{color:#FCD34D;}
+ 
+/* RECENT LOG */
+.log-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.log-item:last-child{border-bottom:none;}
+.log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.log-text{font-size:12px;color:rgba(255,255,255,.6);flex:1;}
+.log-time{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.3);}
+ 
+/* START BUTTON */
+.btn-start{width:100%;padding:14px;background:var(--ir-blue);color:#fff;border:none;border-radius:10px;font-family:var(--font-primary);font-size:14px;font-weight:600;cursor:pointer;transition:.15s;letter-spacing:.03em;margin-top:16px;}
+.btn-start:hover{background:var(--ir-blue-bright);}
+.btn-start:disabled{background:#1A3358;color:rgba(255,255,255,.3);cursor:not-allowed;}
+ 
+/* PNR LOOKUP */
+.pnr-input{width:100%;padding:12px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;font-family:var(--font-mono);font-size:15px;color:#fff;outline:none;letter-spacing:.06em;text-transform:uppercase;}
+.pnr-input:focus{border-color:rgba(37,99,235,.6);background:rgba(37,99,235,.1);}
+.pnr-input::placeholder{color:rgba(255,255,255,.2);text-transform:none;letter-spacing:.02em;font-family:var(--font-primary);}
+.btn-lookup{width:100%;padding:11px;background:#1A3358;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12);border-radius:8px;font-family:var(--font-primary);font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;transition:.15s;}
+.btn-lookup:hover{background:var(--ir-blue);border-color:var(--ir-blue-bright);color:#fff;}
+</style>
+</head>
+<body>
+ 
+<header class="sys-header">
+  <div class="brand-block">
+    <div class="brand-wheel">⊙</div>
+    <div>
+      <div class="brand-text-main">INDIAN RAILWAYS</div>
+      <div class="brand-text-sub">TTE Operations Terminal</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="tte-badge">🪪 TTE PORTAL</div>
+    <a href="/logout" class="logout-link">Logout →</a>
+  </div>
+</header>
+ 
+<div class="main">
+ 
+  <!-- OFFICER BAR -->
+  <div class="officer-bar">
+    <div style="display:flex;align-items:center;">
+      <div class="officer-avatar">🪪</div>
+      <div class="officer-info">
+        <div class="officer-name">Travelling Ticket Examiner</div>
+        <div class="officer-role">South Western Railway Zone &nbsp;·&nbsp; Bangalore Division</div>
+      </div>
+    </div>
+    <div class="officer-meta">
+      <div class="officer-meta-item">
+        <div class="officer-meta-val" id="verifiedCount">0</div>
+        <div class="officer-meta-lbl">Verified Today</div>
+      </div>
+      <div class="officer-meta-item">
+        <div class="officer-meta-val" id="fraudCount" style="color:#F87171;">0</div>
+        <div class="officer-meta-lbl">Fraud Detected</div>
+      </div>
+      <div class="officer-meta-item">
+        <div class="officer-meta-val" id="currentTime">--:--</div>
+        <div class="officer-meta-lbl">Current Time</div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- SHIFT BAR -->
+  <div class="shift-bar">
+    <div class="shift-dot"></div>
+    <div class="shift-text">Shift active · <strong>Train 12657 — Chennai Mail</strong> · Bangalore → Chennai · Dep. 23:55 · Currently at <strong>Krishnarajapuram Jn.</strong></div>
+  </div>
+ 
+  <!-- MAIN GRID -->
+  <div class="tte-grid">
+ 
+    <!-- COACH SELECTION -->
+    <div class="tte-card">
+      <div class="tte-card-head">
+        <div class="tte-card-icon" style="background:rgba(37,99,235,.2);">🚋</div>
+        <div class="tte-card-title">Select Coach for Verification</div>
+      </div>
+      <div class="tte-card-body">
+        <div class="coach-grid">
+          <div class="coach-btn selected" id="coach-A1" onclick="selectCoach('A1',this)">
+            <div class="coach-code">A1</div>
+            <div class="coach-type coach-type-selected">AC 2-Tier</div>
+          </div>
+          <div class="coach-btn" id="coach-B1" onclick="selectCoach('B1',this)">
+            <div class="coach-code">B1</div>
+            <div class="coach-type">AC 3-Tier</div>
+          </div>
+          <div class="coach-btn" id="coach-S1" onclick="selectCoach('S1',this)">
+            <div class="coach-code">S1</div>
+            <div class="coach-type">Sleeper</div>
+          </div>
+          <div class="coach-btn" id="coach-S2" onclick="selectCoach('S2',this)">
+            <div class="coach-code">S2</div>
+            <div class="coach-type">Sleeper</div>
+          </div>
+          <div class="coach-btn" id="coach-GN" onclick="selectCoach('General',this)">
+            <div class="coach-code">GN</div>
+            <div class="coach-type">General</div>
+          </div>
+          <div class="coach-btn" id="coach-PC" onclick="selectCoach('Pantry',this)">
+            <div class="coach-code">PC</div>
+            <div class="coach-type">Pantry Car</div>
+          </div>
+        </div>
+        <button class="btn-start" id="startBtn" onclick="startVerification()">Begin Verification in A1 →</button>
+      </div>
+    </div>
+ 
+    <!-- SESSION STATS + LOG -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tte-card">
+        <div class="tte-card-head">
+          <div class="tte-card-icon" style="background:rgba(5,150,105,.2);">📊</div>
+          <div class="tte-card-title">Today's Verification Stats</div>
+        </div>
+        <div class="tte-card-body">
+          <div class="stats-row">
+            <div class="stat-mini green">
+              <div class="stat-mini-val">18</div>
+              <div class="stat-mini-lbl">Valid</div>
+            </div>
+            <div class="stat-mini red">
+              <div class="stat-mini-val">2</div>
+              <div class="stat-mini-lbl">Fraud</div>
+            </div>
+            <div class="stat-mini yellow">
+              <div class="stat-mini-val">3</div>
+              <div class="stat-mini-lbl">Pending</div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="tte-card">
+        <div class="tte-card-head">
+          <div class="tte-card-icon" style="background:rgba(217,119,6,.2);">📋</div>
+          <div class="tte-card-title">Recent Activity</div>
+        </div>
+        <div class="tte-card-body">
+          <div class="log-item">
+            <div class="log-dot" style="background:#34D399;"></div>
+            <div class="log-text">Seat 12 / Bogie A1 — VALID &nbsp;·&nbsp; Arjun Sharma</div>
+            <div class="log-time">23:18</div>
+          </div>
+          <div class="log-item">
+            <div class="log-dot" style="background:#34D399;"></div>
+            <div class="log-text">Seat 8 / Bogie A1 — VALID &nbsp;·&nbsp; Priya Nair</div>
+            <div class="log-time">23:15</div>
+          </div>
+          <div class="log-item">
+            <div class="log-dot" style="background:#F87171;"></div>
+            <div class="log-text">Seat 3 / Bogie S1 — FRAUD DETECTED &nbsp;·&nbsp; Fine ₹500</div>
+            <div class="log-time">23:09</div>
+          </div>
+          <div class="log-item">
+            <div class="log-dot" style="background:#34D399;"></div>
+            <div class="log-text">Seat 17 / Bogie S1 — VALID &nbsp;·&nbsp; Meena Rao</div>
+            <div class="log-time">23:05</div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- PNR LOOKUP -->
+      <div class="tte-card">
+        <div class="tte-card-head">
+          <div class="tte-card-icon" style="background:rgba(100,116,139,.2);">🔍</div>
+          <div class="tte-card-title">Manual PNR Lookup</div>
+        </div>
+        <div class="tte-card-body">
+          <input class="pnr-input" id="pnrInput" placeholder="Enter PNR or Ticket ID" maxlength="20">
+          <button class="btn-lookup" onclick="lookupPnr()">Look Up Passenger Record</button>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</div>
+ 
+<script>
+// Update clock
+function updateClock() {
+  const now = new Date();
+  document.getElementById('currentTime').textContent =
+    now.getHours().toString().padStart(2,'0') + ':' +
+    now.getMinutes().toString().padStart(2,'0');
+}
+updateClock(); setInterval(updateClock, 10000);
+ 
+let selectedCoach = 'A1';
+ 
+function selectCoach(coach, el) {
+  document.querySelectorAll('.coach-btn').forEach(b => {
+    b.classList.remove('selected');
+    b.querySelector('.coach-type').classList.remove('coach-type-selected');
+  });
+  el.classList.add('selected');
+  el.querySelector('.coach-type').classList.add('coach-type-selected');
+  selectedCoach = coach;
+  document.getElementById('startBtn').textContent = 'Begin Verification in ' + coach + ' →';
+}
+ 
+function startVerification() {
+  fetch('/select_bogie', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bogie: selectedCoach })
+  })
+  .then(r => r.json())
+  .then(d => { window.location = d.redirect; });
+}
+ 
+function lookupPnr() {
+  const pnr = document.getElementById('pnrInput').value.trim();
+  if (!pnr) return;
+  window.location = '/scan/' + pnr;
+}
+</script>
+</body>
+</html>

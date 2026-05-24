@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Ticket — Indian Railways</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ir-navy:#0A1628;--ir-blue:#1B4F9E;--ir-blue-bright:#2563EB;--ir-blue-light:#DBEAFE;
+  --ir-saffron:#D97706;--ir-green:#059669;--ir-green-light:#D1FAE5;
+  --ir-red:#DC2626;--ir-slate:#64748B;--ir-slate-dark:#334155;
+  --font-primary:'IBM Plex Sans',Arial,sans-serif;--font-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-primary);background:#F1F5F9;color:var(--ir-slate-dark);-webkit-font-smoothing:antialiased;}
+.sys-header{background:var(--ir-navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:3px solid var(--ir-saffron);position:sticky;top:0;z-index:100;}
+.brand-block{display:flex;align-items:center;gap:14px;}
+.brand-wheel{width:38px;height:38px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.brand-text-main{font-size:15px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.brand-text-sub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
+ 
+.main{max-width:760px;margin:0 auto;padding:32px 24px;}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ir-slate);margin-bottom:20px;}
+.breadcrumb a{color:var(--ir-blue);text-decoration:none;}
+ 
+/* SUCCESS BANNER */
+.success-banner{background:var(--ir-green);color:#fff;border-radius:12px;padding:20px 28px;display:flex;align-items:center;gap:16px;margin-bottom:28px;box-shadow:0 4px 12px rgba(5,150,105,.3);}
+.success-icon{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.success-title{font-size:18px;font-weight:600;margin-bottom:2px;}
+.success-sub{font-size:13px;color:rgba(255,255,255,.8);}
+ 
+/* TICKET CARD — Physical Ticket Style */
+.ticket-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.12);border:1px solid #E2E8F0;}
+ 
+/* TICKET HEADER */
+.ticket-header{background:var(--ir-navy);padding:24px 32px;display:flex;align-items:flex-start;justify-content:space-between;}
+.ticket-ir-logo{display:flex;align-items:center;gap:12px;}
+.ticket-logo-wheel{width:42px;height:42px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.ticket-org-name{font-size:14px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.ticket-org-sub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-top:1px;}
+.ticket-type{text-align:right;}
+.ticket-type-label{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.ticket-type-val{font-size:13px;font-weight:600;color:rgba(255,255,255,.9);}
+ 
+/* PNR STRIPE */
+.pnr-stripe{background:#1A3358;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.pnr-block{display:flex;align-items:center;gap:24px;}
+.pnr-item{}
+.pnr-label{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;}
+.pnr-val{font-family:var(--font-mono);font-size:18px;font-weight:600;color:#fff;letter-spacing:.08em;}
+.pnr-sub-val{font-family:var(--font-mono);font-size:13px;font-weight:500;color:rgba(255,255,255,.8);letter-spacing:.05em;}
+.ticket-status-badge{background:var(--ir-green);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:.05em;}
+ 
+/* ROUTE SECTION */
+.ticket-route{padding:28px 32px;border-bottom:1px solid #F1F5F9;}
+.route-row{display:flex;align-items:center;gap:0;}
+.route-col{flex:1;}
+.route-col-right{text-align:right;}
+.r-station-code{font-family:var(--font-mono);font-size:36px;font-weight:600;color:var(--ir-navy);letter-spacing:.05em;}
+.r-station-name{font-size:12px;color:var(--ir-slate);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.r-time{font-size:28px;font-weight:600;color:var(--ir-slate-dark);font-family:var(--font-mono);margin-top:8px;}
+.r-date{font-size:12px;color:var(--ir-slate);margin-top:2px;}
+.route-arrow-col{flex-shrink:0;width:120px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.r-arrow-line{width:80px;height:2px;background:linear-gradient(90deg,var(--ir-navy),var(--ir-blue-bright));}
+.r-train-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--ir-blue);background:var(--ir-blue-light);padding:3px 8px;border-radius:4px;margin-top:4px;}
+.r-duration{font-size:11px;color:var(--ir-slate);margin-top:2px;}
+ 
+/* DETAILS GRID */
+.ticket-details{padding:24px 32px;border-bottom:1px solid #F1F5F9;display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.detail-col{padding:0 16px;border-right:1px solid #F1F5F9;}
+.detail-col:first-child{padding-left:0;}
+.detail-col:last-child{border-right:none;}
+.d-label{font-size:10px;color:var(--ir-slate);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:6px;}
+.d-val{font-size:15px;font-weight:600;color:var(--ir-navy);font-family:var(--font-mono);}
+.d-sub{font-size:11px;color:var(--ir-slate);margin-top:2px;}
+ 
+/* PERFORATION */
+.perforation{position:relative;margin:0;height:32px;display:flex;align-items:center;}
+.perf-line{flex:1;border-top:2px dashed #CBD5E1;}
+.perf-circle-left{width:24px;height:24px;border-radius:50%;background:#F1F5F9;border:1px solid #E2E8F0;flex-shrink:0;margin-left:-12px;}
+.perf-circle-right{width:24px;height:24px;border-radius:50%;background:#F1F5F9;border:1px solid #E2E8F0;flex-shrink:0;margin-right:-12px;}
+.perf-label{position:absolute;left:50%;transform:translateX(-50%);font-size:10px;color:var(--ir-slate);letter-spacing:.08em;text-transform:uppercase;background:#fff;padding:0 12px;}
+ 
+/* QR SECTION */
+.ticket-qr{padding:24px 32px;display:flex;align-items:flex-start;gap:32px;}
+.qr-block{flex-shrink:0;}
+.qr-block img{width:150px;height:150px;border:1px solid #E2E8F0;border-radius:10px;}
+.qr-info{flex:1;}
+.qr-title{font-size:13px;font-weight:700;color:var(--ir-navy);letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;}
+.qr-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #F1F5F9;font-size:12px;}
+.qr-item:last-child{border-bottom:none;}
+.qr-item-label{color:var(--ir-slate);}
+.qr-item-val{font-family:var(--font-mono);font-weight:600;color:var(--ir-slate-dark);font-size:11px;}
+ 
+/* FOOTER */
+.ticket-footer{background:#FAFBFC;padding:16px 32px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;}
+.ticket-footer-text{font-size:11px;color:var(--ir-slate);}
+ 
+/* ACTIONS */
+.actions{display:flex;gap:12px;margin-top:20px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:8px;font-family:var(--font-primary);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.15s;text-decoration:none;}
+.btn-primary{background:var(--ir-navy);color:#fff;}
+.btn-primary:hover{background:var(--ir-blue);}
+.btn-secondary{background:#fff;color:var(--ir-blue);border:1px solid var(--ir-blue);}
+.btn-secondary:hover{background:var(--ir-blue-light);}
+ 
+@media print{
+  .sys-header,.success-banner,.actions{display:none!important;}
+  body{background:#fff;}
+  .ticket-card{box-shadow:none;border:1px solid #999;}
+}
+</style>
+</head>
+<body>
+ 
+<header class="sys-header">
+  <div class="brand-block">
+    <div class="brand-wheel">⊙</div>
+    <div>
+      <div class="brand-text-main">INDIAN RAILWAYS</div>
+      <div class="brand-text-sub">Digital Services Platform</div>
+    </div>
+  </div>
+</header>
+ 
+<div class="main">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span>
+    <span>Booking Confirmation</span>
+  </div>
+ 
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner">
+    <div class="success-icon">✓</div>
+    <div>
+      <div class="success-title">Booking Confirmed Successfully</div>
+      <div class="success-sub">Your QR-enabled ticket has been issued. Present this at the time of verification.</div>
+    </div>
+  </div>
+ 
+  <!-- TICKET CARD -->
+  <div class="ticket-card" id="ticketToPrint">
+ 
+    <!-- HEADER -->
+    <div class="ticket-header">
+      <div class="ticket-ir-logo">
+        <div class="ticket-logo-wheel">⊙</div>
+        <div>
+          <div class="ticket-org-name">INDIAN RAILWAYS</div>
+          <div class="ticket-org-sub">Ministry of Railways, Govt. of India</div>
+        </div>
+      </div>
+      <div class="ticket-type">
+        <div class="ticket-type-label">Ticket Type</div>
+        <div class="ticket-type-val">QR Biometric Verified</div>
+      </div>
+    </div>
+ 
+    <!-- PNR STRIPE -->
+    <div class="pnr-stripe">
+      <div class="pnr-block">
+        <div class="pnr-item">
+          <div class="pnr-label">PNR Number</div>
+          <div class="pnr-val">{{ticket.pnr}}</div>
+        </div>
+        <div style="width:1px;height:40px;background:rgba(255,255,255,.15);"></div>
+        <div class="pnr-item">
+          <div class="pnr-label">Ticket ID</div>
+          <div class="pnr-sub-val">{{ticket.ticket_id}}</div>
+        </div>
+      </div>
+      <div class="ticket-status-badge">✓ CONFIRMED</div>
+    </div>
+ 
+    <!-- ROUTE -->
+    <div class="ticket-route">
+      <div class="route-row">
+        <div class="route-col">
+          <div class="r-station-code">{{ticket.source[:3]|upper}}</div>
+          <div class="r-station-name">{{ticket.source}}</div>
+          <div class="r-time">—</div>
+          <div class="r-date">Departure</div>
+        </div>
+        <div class="route-arrow-col">
+          <div class="r-arrow-line"></div>
+          <div class="r-train-num">Via Rail</div>
+          <div class="r-duration">Journey</div>
+        </div>
+        <div class="route-col route-col-right">
+          <div class="r-station-code">{{ticket.destination[:3]|upper}}</div>
+          <div class="r-station-name">{{ticket.destination}}</div>
+          <div class="r-time">—</div>
+          <div class="r-date">Arrival</div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- DETAILS GRID -->
+    <div class="ticket-details">
+      <div class="detail-col">
+        <div class="d-label">Passenger</div>
+        <div class="d-val" style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;">{{ticket.name}}</div>
+        <div class="d-sub">Confirmed</div>
+      </div>
+      <div class="detail-col">
+        <div class="d-label">Coach / Bogie</div>
+        <div class="d-val">{{ticket.bogie}}</div>
+        <div class="d-sub">Assigned</div>
+      </div>
+      <div class="detail-col">
+        <div class="d-label">Travel Class</div>
+        <div class="d-val">{{ticket.seat}}</div>
+        <div class="d-sub">Class of Service</div>
+      </div>
+      <div class="detail-col">
+        <div class="d-label">Journey Date</div>
+        <div class="d-val" style="font-size:12px;">{{ticket.date}}</div>
+        <div class="d-sub">Travel Date</div>
+      </div>
+    </div>
+ 
+    <!-- PERFORATION -->
+    <div class="perforation">
+      <div class="perf-circle-left"></div>
+      <div class="perf-line"></div>
+      <div class="perf-label">QR Verification Stub</div>
+      <div class="perf-line"></div>
+      <div class="perf-circle-right"></div>
+    </div>
+ 
+    <!-- QR SECTION -->
+    <div class="ticket-qr">
+      <div class="qr-block">
+        <img src="/static/qr/{{ticket.ticket_id}}.png" alt="Ticket QR Code">
+        <div style="text-align:center;font-size:10px;color:var(--ir-slate);margin-top:8px;letter-spacing:.04em;">SCAN TO VERIFY</div>
+      </div>
+      <div class="qr-info">
+        <div class="qr-title">Verification Details</div>
+        <div class="qr-item">
+          <span class="qr-item-label">Ticket ID</span>
+          <span class="qr-item-val">{{ticket.ticket_id}}</span>
+        </div>
+        <div class="qr-item">
+          <span class="qr-item-label">PNR</span>
+          <span class="qr-item-val">{{ticket.pnr}}</span>
+        </div>
+        <div class="qr-item">
+          <span class="qr-item-label">Auth Method</span>
+          <span class="qr-item-val">QR + Biometric</span>
+        </div>
+        <div class="qr-item">
+          <span class="qr-item-label">Route</span>
+          <span class="qr-item-val">{{ticket.source[:3]|upper}} → {{ticket.destination[:3]|upper}}</span>
+        </div>
+        <div class="qr-item">
+          <span class="qr-item-label">Coach</span>
+          <span class="qr-item-val">{{ticket.bogie}}</span>
+        </div>
+        <div style="margin-top:12px;background:var(--ir-green-light);border:1px solid #6EE7B7;border-radius:8px;padding:10px 12px;font-size:11px;color:#065F46;">
+          ✓ This ticket is QR-verified and biometrically linked to the registered passenger. Any transfer or use by an unauthorized person constitutes fraud and is punishable under Railways Act.
+        </div>
+      </div>
+    </div>
+ 
+    <!-- TICKET FOOTER -->
+    <div class="ticket-footer">
+      <div class="ticket-footer-text">Issued by: Indian Railways Digital Services Platform &nbsp;·&nbsp; This is a system-generated ticket and requires no signature</div>
+      <div class="ticket-footer-text">SmartRail v3.1</div>
+    </div>
+ 
+  </div>
+ 
+  <!-- ACTION BUTTONS -->
+  <div class="actions">
+    <button class="btn btn-primary" onclick="window.print()">⬇ Download / Print Ticket</button>
+    <a href="/" class="btn btn-secondary">← Return to Home</a>
+    <a href="/pnr" class="btn btn-secondary">Check PNR Status</a>
+  </div>
+ 
+</div>
+</body>
+</html>

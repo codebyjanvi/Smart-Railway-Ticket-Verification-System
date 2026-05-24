@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Ticket — Indian Railways Digital Services</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ir-navy:#0A1628;--ir-blue:#1B4F9E;--ir-blue-bright:#2563EB;--ir-blue-light:#DBEAFE;
+  --ir-saffron:#D97706;--ir-green:#059669;--ir-green-light:#D1FAE5;
+  --ir-red:#DC2626;--ir-slate:#64748B;--ir-slate-dark:#334155;
+  --font-primary:'IBM Plex Sans',Arial,sans-serif;--font-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-primary);background:#F1F5F9;color:var(--ir-slate-dark);-webkit-font-smoothing:antialiased;}
+.sys-header{background:var(--ir-navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:3px solid var(--ir-saffron);position:sticky;top:0;z-index:100;}
+.brand-block{display:flex;align-items:center;gap:14px;}
+.brand-wheel{width:38px;height:38px;border-radius:50%;background:var(--ir-saffron);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.brand-text-main{font-size:15px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.brand-text-sub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
+.header-nav{display:flex;align-items:center;gap:2px;}
+.header-nav a{color:rgba(255,255,255,.65);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:4px;transition:.15s;}
+.header-nav a:hover,.header-nav a.active{background:rgba(255,255,255,.1);color:#fff;}
+ 
+.main{max-width:960px;margin:0 auto;padding:32px 24px;}
+ 
+/* BREADCRUMB */
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ir-slate);margin-bottom:20px;}
+.breadcrumb a{color:var(--ir-blue);text-decoration:none;}
+ 
+/* PAGE TITLE */
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;}
+.page-title{font-size:22px;font-weight:600;color:var(--ir-navy);letter-spacing:-.01em;}
+.page-subtitle{font-size:13px;color:var(--ir-slate);margin-top:4px;}
+.step-indicator{display:flex;align-items:center;gap:0;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;}
+.step{padding:8px 20px;font-size:12px;font-weight:600;color:var(--ir-slate);letter-spacing:.04em;text-transform:uppercase;background:#fff;border-right:1px solid #E2E8F0;}
+.step:last-child{border-right:none;}
+.step.active{background:var(--ir-navy);color:#fff;}
+.step.done{background:var(--ir-green-light);color:#065F46;}
+ 
+/* LAYOUT */
+.booking-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;}
+ 
+/* FORM CARD */
+.form-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.form-section-head{padding:16px 24px;border-bottom:1px solid #F1F5F9;background:#FAFBFC;display:flex;align-items:center;gap:10px;}
+.form-section-num{width:22px;height:22px;border-radius:50%;background:var(--ir-navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.form-section-title{font-size:13px;font-weight:600;color:var(--ir-navy);letter-spacing:.04em;text-transform:uppercase;}
+.form-body{padding:24px;}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:16px;}
+.form-group:last-child{margin-bottom:0;}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--ir-slate);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;}
+.form-control{width:100%;padding:10px 14px;border:1px solid #CBD5E1;border-radius:8px;font-family:var(--font-primary);font-size:14px;color:var(--ir-slate-dark);background:#fff;outline:none;transition:.15s;appearance:none;}
+.form-control:focus{border-color:var(--ir-blue-bright);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.form-control::placeholder{color:#94A3B8;}
+select.form-control{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748B'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+.form-hint{font-size:11px;color:var(--ir-slate);margin-top:4px;}
+ 
+/* ROUTE SWAP */
+.route-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;}
+.swap-btn{width:36px;height:40px;display:flex;align-items:center;justify-content:center;background:#F1F5F9;border:1px solid #E2E8F0;border-radius:8px;cursor:pointer;color:var(--ir-blue);font-size:18px;transition:.15s;margin-bottom:0;}
+.swap-btn:hover{background:#DBEAFE;}
+ 
+/* CAMERA SECTION */
+.camera-area{border:2px dashed #CBD5E1;border-radius:10px;overflow:hidden;aspect-ratio:4/3;position:relative;background:#000;}
+.camera-area video{width:100%;height:100%;object-fit:cover;}
+.camera-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);}
+.camera-guide{width:160px;height:160px;border:2px solid rgba(255,255,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:12px;text-align:center;letter-spacing:.03em;}
+.camera-captured{width:100%;border-radius:10px;display:none;}
+ 
+/* FARE BOX */
+.fare-box{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:16px;}
+.fare-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;}
+.fare-row.total{border-top:1px dashed #CBD5E1;margin-top:8px;padding-top:12px;font-weight:600;font-size:15px;color:var(--ir-navy);}
+.fare-val{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--ir-slate-dark);}
+ 
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:16px;}
+.info-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.info-card-head{padding:12px 20px;border-bottom:1px solid #F1F5F9;background:#FAFBFC;font-size:12px;font-weight:700;color:var(--ir-navy);letter-spacing:.06em;text-transform:uppercase;}
+.info-card-body{padding:16px 20px;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #F9FAFB;font-size:13px;}
+.info-row:last-child{border-bottom:none;}
+.info-label{color:var(--ir-slate);}
+.info-val{font-weight:600;color:var(--ir-slate-dark);font-family:var(--font-mono);font-size:12px;}
+ 
+.btn-proceed{width:100%;padding:14px;background:var(--ir-navy);color:#fff;border:none;border-radius:8px;font-family:var(--font-primary);font-size:14px;font-weight:600;cursor:pointer;transition:.15s;letter-spacing:.03em;margin-top:4px;}
+.btn-proceed:hover{background:var(--ir-blue);}
+.btn-capture{width:100%;padding:10px;background:#fff;color:var(--ir-blue);border:1px solid var(--ir-blue);border-radius:8px;font-family:var(--font-primary);font-size:13px;font-weight:600;cursor:pointer;transition:.15s;margin-top:10px;}
+.btn-capture:hover{background:var(--ir-blue-light);}
+ 
+.capture-badge{display:none;align-items:center;gap:8px;background:var(--ir-green-light);color:#065F46;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;margin-top:10px;}
+ 
+.alert-info{background:var(--ir-blue-light);color:#1E40AF;border-left:3px solid var(--ir-blue);padding:12px 16px;border-radius:8px;font-size:12px;margin-bottom:16px;}
+ 
+footer.footer{background:var(--ir-navy);color:rgba(255,255,255,.4);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;font-size:11px;letter-spacing:.04em;margin-top:40px;}
+</style>
+</head>
+<body>
+ 
+<header class="sys-header">
+  <div class="brand-block">
+    <div class="brand-wheel">⊙</div>
+    <div>
+      <div class="brand-text-main">INDIAN RAILWAYS</div>
+      <div class="brand-text-sub">Digital Services Platform</div>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="/" >Home</a>
+    <a href="/book" class="active">Book Ticket</a>
+    <a href="/pnr">PNR Status</a>
+    <a href="/cancel">Cancellation</a>
+  </nav>
+</header>
+ 
+<div class="main">
+ 
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span>
+    <span>Ticket Booking</span>
+  </div>
+ 
+  <div class="page-head">
+    <div>
+      <div class="page-title">Reserve Rail Ticket</div>
+      <div class="page-subtitle">QR + Biometric Verification Enabled</div>
+    </div>
+    <div class="step-indicator">
+      <div class="step active">1 · Details</div>
+      <div class="step">2 · Payment</div>
+      <div class="step">3 · Ticket</div>
+    </div>
+  </div>
+ 
+  <div class="booking-layout">
+ 
+    <!-- MAIN FORM -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+ 
+      <!-- PASSENGER DETAILS -->
+      <div class="form-card">
+        <div class="form-section-head">
+          <div class="form-section-num">1</div>
+          <div class="form-section-title">Passenger Details</div>
+        </div>
+        <div class="form-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input id="name" class="form-control" placeholder="As per Aadhaar / ID">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mobile Number</label>
+              <input id="phone" class="form-control" placeholder="+91 XXXXX XXXXX" maxlength="10">
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- JOURNEY DETAILS -->
+      <div class="form-card">
+        <div class="form-section-head">
+          <div class="form-section-num">2</div>
+          <div class="form-section-title">Journey Details</div>
+        </div>
+        <div class="form-body">
+          <div class="form-group">
+            <label class="form-label">Route</label>
+            <div class="route-inputs">
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--ir-slate);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;">Origin</div>
+                <select id="source" class="form-control" onchange="getPrice()">
+                  <option>Bangalore</option><option>Mumbai</option><option>Delhi</option>
+                  <option>Chennai</option><option>Kolkata</option><option>Hyderabad</option>
+                  <option>Pune</option><option>Jaipur</option>
+                </select>
+              </div>
+              <button class="swap-btn" onclick="swapRoute()">⇄</button>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--ir-slate);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;">Destination</div>
+                <select id="destination" class="form-control" onchange="getPrice()">
+                  <option>Mumbai</option><option>Bangalore</option><option>Delhi</option>
+                  <option>Chennai</option><option>Kolkata</option><option>Hyderabad</option>
+                  <option>Pune</option><option>Jaipur</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Date of Journey</label>
+              <input id="date" type="date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Travel Class</label>
+              <select id="seat" class="form-control" onchange="getPrice()">
+                <option value="AC">AC Tier 3 (3A)</option>
+                <option value="Sleeper">Sleeper Class (SL)</option>
+                <option value="AC2">AC Tier 2 (2A)</option>
+              </select>
+            </div>
+          </div>
+          <div id="trainInfo" style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:12px 16px;font-size:13px;color:#0C4A6E;display:none;margin-top:8px;">
+            <strong id="trainName"></strong> &nbsp;·&nbsp; <span id="trainTime"></span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- BIOMETRIC CAPTURE -->
+      <div class="form-card">
+        <div class="form-section-head">
+          <div class="form-section-num">3</div>
+          <div class="form-section-title">Biometric Capture</div>
+        </div>
+        <div class="form-body">
+          <div class="alert-info">
+            ⓘ A photo is captured for QR-linked identity verification during travel. Ensure good lighting and face the camera directly.
+          </div>
+          <div class="camera-area" id="cameraArea">
+            <video id="video" autoplay playsinline></video>
+            <div class="camera-overlay" id="camOverlay">
+              <div class="camera-guide">Position face within guide</div>
+            </div>
+          </div>
+          <img id="preview" class="camera-captured">
+          <button class="btn-capture" id="captureBtn" onclick="capture()">📸 &nbsp;Capture Photo</button>
+          <div class="capture-badge" id="captureBadge">✓ &nbsp;Photo captured successfully</div>
+        </div>
+      </div>
+ 
+    </div>
+ 
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+ 
+      <!-- FARE SUMMARY -->
+      <div class="info-card">
+        <div class="info-card-head">Fare Summary</div>
+        <div class="info-card-body">
+          <div class="fare-box">
+            <div class="fare-row">
+              <span style="color:var(--ir-slate);">Base Fare</span>
+              <span class="fare-val" id="fare-base">—</span>
+            </div>
+            <div class="fare-row">
+              <span style="color:var(--ir-slate);">Reservation</span>
+              <span class="fare-val" id="fare-res">—</span>
+            </div>
+            <div class="fare-row">
+              <span style="color:var(--ir-slate);">Superfast Surch.</span>
+              <span class="fare-val" id="fare-sf">—</span>
+            </div>
+            <div class="fare-row total">
+              <span>Total</span>
+              <span id="fare-total">Select route</span>
+            </div>
+          </div>
+          <div class="form-hint" style="margin-top:10px;text-align:center;">Prices inclusive of all taxes</div>
+        </div>
+      </div>
+ 
+      <!-- JOURNEY INFO -->
+      <div class="info-card">
+        <div class="info-card-head">Journey Summary</div>
+        <div class="info-card-body">
+          <div class="info-row">
+            <span class="info-label">From</span>
+            <span class="info-val" id="sum-from">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">To</span>
+            <span class="info-val" id="sum-to">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Train</span>
+            <span class="info-val" id="sum-train">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Class</span>
+            <span class="info-val" id="sum-class">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Date</span>
+            <span class="info-val" id="sum-date">—</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- PROCEED BUTTON -->
+      <button class="btn-proceed" onclick="goToPayment()">Proceed to Payment →</button>
+      <div style="text-align:center;font-size:11px;color:var(--ir-slate);margin-top:4px;">🔒 Secured by Indian Railways PKI</div>
+ 
+    </div>
+  </div>
+</div>
+ 
+<footer class="footer">
+  <div>© 2026 Ministry of Railways, Government of India</div>
+  <div>SmartRail v3.1 — Secure</div>
+</footer>
+ 
+<script>
+// Init
+document.getElementById('date').value = new Date().toISOString().split('T')[0];
+ 
+// Pre-fill from localStorage
+const savedSrc = localStorage.getItem('source');
+const savedDst = localStorage.getItem('destination');
+if (savedSrc) document.getElementById('source').value = savedSrc;
+if (savedDst) document.getElementById('destination').value = savedDst;
+ 
+// Camera
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' }});
+    document.getElementById('video').srcObject = stream;
+    window._stream = stream;
+    // Hide overlay after camera starts
+    setTimeout(() => document.getElementById('camOverlay').style.opacity = '0', 500);
+  } catch(e) {
+    document.getElementById('cameraArea').innerHTML = '<div style="background:#1a1a2e;color:rgba(255,255,255,.5);height:200px;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:10px;">Camera access denied — allow camera to continue</div>';
+  }
+}
+startCamera();
+ 
+function capture() {
+  const video = document.getElementById('video');
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  const img = canvas.toDataURL('image/jpeg', 0.8);
+  localStorage.setItem('face', img);
+ 
+  const preview = document.getElementById('preview');
+  preview.src = img;
+  preview.style.display = 'block';
+  document.getElementById('cameraArea').style.display = 'none';
+  document.getElementById('captureBtn').style.display = 'none';
+  document.getElementById('captureBadge').style.display = 'flex';
+ 
+  if (window._stream) window._stream.getTracks().forEach(t => t.stop());
+}
+ 
+function swapRoute() {
+  const s = document.getElementById('source');
+  const d = document.getElementById('destination');
+  const tmp = s.value; s.value = d.value; d.value = tmp;
+  getPrice();
+}
+ 
+function getPrice() {
+  const src = document.getElementById('source').value;
+  const dst = document.getElementById('destination').value;
+  const seat = document.getElementById('seat').value;
+  const date = document.getElementById('date').value;
+ 
+  // Update sidebar summary
+  document.getElementById('sum-from').textContent = src.substring(0,3).toUpperCase();
+  document.getElementById('sum-to').textContent = dst.substring(0,3).toUpperCase();
+  document.getElementById('sum-class').textContent = seat;
+  if (date) document.getElementById('sum-date').textContent = new Date(date).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+ 
+  fetch('/get_price', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source: src, destination: dst, seat })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.price) {
+      const base = Math.round(d.price * 0.82);
+      const res = Math.round(d.price * 0.1);
+      const sf = d.price - base - res;
+      document.getElementById('fare-base').textContent = '₹' + base;
+      document.getElementById('fare-res').textContent = '₹' + res;
+      document.getElementById('fare-sf').textContent = '₹' + sf;
+      document.getElementById('fare-total').textContent = '₹' + d.price;
+      document.getElementById('fare-total').style.color = 'var(--ir-navy)';
+ 
+      document.getElementById('trainInfo').style.display = 'block';
+      document.getElementById('trainName').textContent = d.train;
+      document.getElementById('trainTime').textContent = d.time;
+      document.getElementById('sum-train').textContent = d.train ? d.train.substring(0,8) : '—';
+    }
+  }).catch(() => {});
+}
+ 
+getPrice();
+ 
+function goToPayment() {
+  const face = localStorage.getItem('face');
+  if (!face) { alert('Please capture your photo first (Step 3).'); return; }
+ 
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const date = document.getElementById('date').value;
+ 
+  if (!name || !phone || !date) { alert('Please fill all passenger details.'); return; }
+ 
+  const data = {
+    name, phone,
+    source: document.getElementById('source').value,
+    destination: document.getElementById('destination').value,
+    date,
+    seat: document.getElementById('seat').value,
+    face
+  };
+  localStorage.setItem('booking', JSON.stringify(data));
+  window.location = '/payment';
+}
+</script>
+</body>
+</html>

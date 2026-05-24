@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Verification Result</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    text-align:center;
+    padding-top:100px;
+    background:#f4f4f4;
+}
+
+.success{
+    color:green;
+    font-size:40px;
+}
+
+.invalid{
+    color:red;
+    font-size:40px;
+}
+
+button{
+    padding:15px 30px;
+    font-size:20px;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+{% if valid %}
+
+    <h1 class="success">
+        ✅ VERIFIED SUCCESSFULLY
+    </h1>
+
+    <a href="/details/{{ ticket_id }}">
+        <button>
+            View Passenger Details
+        </button>
+    </a>
+
+{% else %}
+
+    <h1 class="invalid">
+        ❌ INVALID TICKET
+    </h1>
+
+{% endif %}
+
+</body>
+</html>
